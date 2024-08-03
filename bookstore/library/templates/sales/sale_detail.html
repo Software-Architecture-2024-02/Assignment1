@@ -1,0 +1,8 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>Sale of "{{ object.book.name }}" in {{ object.year }}</h1>
+  <p>Sale: {{ object.sale }}</p>
+  <a href="{% url 'sale-update' object.pk %}">Edit</a>
+  <a href="{% url 'sale-delete' object.pk %}">Delete</a>
+{% endblock %}

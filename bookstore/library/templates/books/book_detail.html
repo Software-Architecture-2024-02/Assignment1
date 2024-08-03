@@ -1,0 +1,11 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>{{ object.name }}</h1>
+  <p>Summary: {{ object.summary }}</p>
+  <p>Date of Publication: {{ object.date_of_publication }}</p>
+  <p>Number of Sales: {{ object.number_of_sales }}</p>
+  <p>Author: <a href="{% url 'author-detail' object.author.pk %}">{{ object.author.name }}</a></p>
+  <a href="{% url 'book-update' object.pk %}">Edit</a>
+  <a href="{% url 'book-delete' object.pk %}">Delete</a>
+{% endblock %}

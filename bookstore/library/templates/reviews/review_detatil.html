@@ -1,0 +1,10 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>Review for "{{ object.book.name }}"</h1>
+  <p>Review: {{ object.review }}</p>
+  <p>Score: {{ object.score }}</p>
+  <p>Number of Upvotes: {{ object.number_of_upvotes }}</p>
+  <a href="{% url 'review-update' object.pk %}">Edit</a>
+  <a href="{% url 'review-delete' object.pk %}">Delete</a>
+{% endblock %}

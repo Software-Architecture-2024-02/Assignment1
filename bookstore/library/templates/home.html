@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Bookstore{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1> Bookstore</h1>
+        <nav>
+            <a href="{% url 'author-list' %}">Authors</a>
+            <a href="{% url 'book-list' %}">Books</a>
+            <a href="{% url 'review-list' %}">Reviews</a>
+            <a href="{% url 'sale-list' %}">Sales</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>
