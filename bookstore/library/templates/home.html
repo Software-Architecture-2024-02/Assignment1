@@ -4,11 +4,17 @@
     <title>{% block title %}My Bookstore{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1> Bookstore</h1>
         <nav>
+            <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'author-list' %}">Authors</a>
             <a href="{% url 'book-list' %}">Books</a>
             <a href="{% url 'review-list' %}">Reviews</a>
@@ -17,6 +23,63 @@
     </header>
     <main>
         {% block content %}
+        <button onclick="showTable('topRatedBooksTable')">Top Rated Books</button>
+        <button onclick="showTable('topSellingBooksTable')">Top Selling Books</button>
+
+        <div id="topRatedBooksTable" class="hidden">
+            <h2>Top 10 Rated Books of All Time</h2>
+            <table>
+                <tr>
+                    <th>Book</th>
+                    <th>Author</th>
+                    <th>Avg Score</th>
+                    <th>Highest Review</th>
+                    <th>Lowest Review</th>
+                </tr>
+                {% for book, highest_review, lowest_review in top_books_with_reviews %}
+                <tr>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.author.name }}</td>
+                    <td>{{ book.avg_score|floatformat:3  }}</td>
+                    <td>{{ highest_review.review }} (Score: {{ highest_review.score }}, Upvotes: {{ highest_review.number_of_upvotes }})</td>
+                    <td>{{ lowest_review.review }} (Score: {{ lowest_review.score }}, Upvotes: {{ lowest_review.number_of_upvotes }})</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div id="topSellingBooksTable" class="hidden">
+            <h2>Top 50 Selling Books of All Time</h2>
+            <table>
+                <tr>
+                    <th>Book</th>
+                    <th>Author</th>
+                    <th>Total Sales</th>
+                    <th>Author Sales</th>
+                    <th>Top 5 in Year of Publication</th>
+                </tr>
+                {% for book, author_sales, was_top_5 in top_selling_books_with_authors %}
+                <tr>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.author.name }}</td>
+                    <td>{{ book.total_sales }}</td>
+                    <td>{{ author_sales }}</td>
+                    <td>{{ was_top_5 }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <script>
+            function showTable(tableId) {
+                // Hide all tables
+                document.getElementById('topRatedBooksTable').classList.add('hidden');
+                document.getElementById('topSellingBooksTable').classList.add('hidden');
+                
+                // Show the selected table
+                document.getElementById(tableId).classList.remove('hidden');
+            }
+        </script>
         {% endblock %}
     </main>
 </body>
