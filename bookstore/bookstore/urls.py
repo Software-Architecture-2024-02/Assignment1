@@ -25,4 +25,5 @@ urlpatterns = [
     path('reviews/', include('library.urls.reviews')),
     path('sales/', include('library.urls.sales')),
     path('', include('library.urls.tops')),
+    path('search/', include('library.urls.search')),
 ]
