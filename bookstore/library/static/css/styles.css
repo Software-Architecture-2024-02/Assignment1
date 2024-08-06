@@ -41,12 +41,71 @@ nav a:hover {
 
 /* Main content styling */
 main {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 2rem auto;
     padding: 1rem;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+}
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+table, th, td {
+    border: 1px solid #bbbbbb;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: center;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Button styling */
+button {
+    background-color: #565f76;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #949bad;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:active {
+    background-color: #5f6166ef;
+    transform: translateY(2px);
+}
+/* Container for inline buttons */
+.button-container {
+    display: flex;
+    padding: 0 120px;
+    justify-content: space-between;
 }
 
 /* Form styling */
@@ -93,4 +152,24 @@ ul li a {
 
 ul li a:hover {
     text-decoration: underline;
+}
+
+p {
+    text-align: center;
+}
+
+/* Styles for filter inputs */
+.filter-input {
+    padding: 8px;
+    margin: 5px 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Style adjustments for the container of the filter inputs */
+.filter-container {
+    margin: 1px auto;
+    padding: 0 90px;
 }

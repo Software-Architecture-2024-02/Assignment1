@@ -1,0 +1,24 @@
+{% extends "home.html" %}
+
+{% block content %}
+    <h2>Top 10 Rated Books of All Time</h2>
+    <table>
+        <tr>
+            <th>Book</th>
+            <th>Author</th>
+            <th>Avg Score</th>
+            <th>Highest Review</th>
+            <th>Lowest Review</th>
+        </tr>
+        {% for book, highest_review, lowest_review in top_books_with_reviews %}
+        <tr>
+            <td>{{ book.name }}</td>
+            <td>{{ book.author.name }}</td>
+            <td>{{ book.avg_score|floatformat:3 }}</td>
+            <td>{{ highest_review.review }} (Score: {{ highest_review.score }}⭐, Upvotes: {{ highest_review.number_of_upvotes }}👍)</td>
+            <td>{{ lowest_review.review }} (Score: {{ lowest_review.score }}⭐, Upvotes: {{ lowest_review.number_of_upvotes }}👍)</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
