@@ -1,0 +1,175 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+/* Header styles */
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    margin-top: 1rem;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main content styling */
+main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+}
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+table, th, td {
+    border: 1px solid #bbbbbb;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: center;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Button styling */
+button {
+    background-color: #565f76;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #949bad;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:active {
+    background-color: #5f6166ef;
+    transform: translateY(2px);
+}
+/* Container for inline buttons */
+.button-container {
+    display: flex;
+    padding: 0 120px;
+    justify-content: space-between;
+}
+
+/* Form styling */
+form {
+    margin: 1rem 0;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #555;
+}
+
+/* Lists */
+ul {
+    list-style-type: none;
+}
+
+ul li {
+    margin-bottom: 0.5rem;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+p {
+    text-align: center;
+}
+
+/* Styles for filter inputs */
+.filter-input {
+    padding: 8px;
+    margin: 5px 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Style adjustments for the container of the filter inputs */
+.filter-container {
+    margin: 1px auto;
+    padding: 0 90px;
+}

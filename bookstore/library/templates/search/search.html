@@ -1,0 +1,40 @@
+<!-- templates/search/search.html -->
+{% extends "home.html" %}
+
+{% block content %}
+    <h1>Search for Books</h1>
+    <form class="d-flex" method="GET" action="{% url 'search' %}">
+        <input class="form-control me-2" type="search" name="q" placeholder="Look for descriptions" value="{{ request.GET.q }}">
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+
+    {% if search_results %}
+        <h2>Search Results:</h2>
+        <ul>
+            {% for book in search_results %}
+                <h2><a href="{{ book.get_absolute_url }}">{{ book.name }}</a></h2>
+                <p>{{ book.summary }}</p>
+            {% endfor %}
+        </ul>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if search_results.has_previous %}
+                    <a href="?q={{ request.GET.q }}&page=1">&laquo; first</a>
+                    <a href="?q={{ request.GET.q }}&page={{ search_results.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ search_results.number }} of {{ search_results.paginator.num_pages }}.
+                </span>
+
+                {% if search_results.has_next %}
+                    <a href="?q={{ request.GET.q }}&page={{ search_results.next_page_number }}">next</a>
+                    <a href="?q={{ request.GET.q }}&page={{ search_results.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "home.html" %}
+
+{% block content %}
+    <h2>Author Grid</h2>
+
+    <div class="filter-container">
+        <input type="text" id="nameFilter" class="filter-input" placeholder="Filter by Author Name" onkeyup="filterTable(0)">
+        <input type="number" id="numBooksFilter" class="filter-input" placeholder="Filter by Number of Books" onkeyup="filterTable(1)">
+        <input type="number" id="avgScoreFilter" class="filter-input" placeholder="Filter by Average Score" step="0.01" onkeyup="filterTable(2)">
+        <input type="number" id="totalSalesFilter" class="filter-input" placeholder="Filter by Total Sales" onkeyup="filterTable(3)">
+    </div>
+
+    <table id="authorTable">
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="name" data-order="{{ order }}">
+                    Author Name <i class="fa-solid fa-sort"></i> 
+                </th>
+                <th class="sortable" data-sort="num_books" data-order="{{ order }}">
+                    Number of Published Books <i class="fa-solid fa-sort"></i>
+                </th>
+                <th class="sortable" data-sort="avg_score" data-order="{{ order }}">
+                    Average Score <i class="fa-solid fa-sort"></i>
+                </th>
+                <th class="sortable" data-sort="total_sales" data-order="{{ order }}">
+                    Total Sales <i class="fa-solid fa-sort"></i>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authors %}
+            <tr>
+                <td><a href="{{ author.get_absolute_url }}">{{ author.name }}</a></td>
+                <td>{{ author.num_books }}</td>
+                <td>{{ author.avg_score|floatformat:2 }}</td>
+                <td>{{ author.total_sales }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const headers = document.querySelectorAll('th.sortable');
+            
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const sort = header.getAttribute('data-sort');
+                    const currentOrder = header.getAttribute('data-order');
+                    const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+                    const url = new URL(window.location);
+                    url.searchParams.set('sort', sort);
+                    url.searchParams.set('order', newOrder);
+                    window.location.href = url.toString();
+                });
+            });
+        });
+
+        function filterTable(columnIndex) {
+            const input = document.querySelectorAll('.filter-input')[columnIndex].value.toLowerCase();
+            const table = document.getElementById('authorTable');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const cell = cells[columnIndex];
+                if (cell) {
+                    const text = cell.textContent || cell.innerText;
+                    rows[i].style.display = text.toLowerCase().includes(input) ? '' : 'none';
+                }
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>Sale List</h1>
+  <ul>
+    {% for sale in object_list %}
+      <li> ♦ <a href="{% url 'sale-detail' sale.pk %}">Sale of "{{ sale.book.name }}" in {{ sale.year }}</a></li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'sale-create' %}">Add a new sale</a>
+{% endblock %}

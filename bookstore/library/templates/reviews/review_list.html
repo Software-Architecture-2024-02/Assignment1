@@ -1,0 +1,11 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>Review List</h1>
+  <ul>
+    {% for review in object_list %}
+      <li> ♦ <a href="{% url 'review-detail' review.pk %}"> "{{ review.book.name }}" : {{ review.score }}⭐ </a></li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'review-create' %}">Add a new review</a>
+{% endblock %}
