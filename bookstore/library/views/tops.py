@@ -24,7 +24,6 @@ class Top10RatedBooksView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # `top_books_with_reviews` is set in get_queryset()
         return context
 
 
@@ -49,5 +48,4 @@ class Top50SellingBooksView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # `top_selling_books_with_authors` is set in get_queryset()
         return context
