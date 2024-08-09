@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: bookstore_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: /bin/bash -c "python bookstore/manage.py migrate && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver"
+    volumes:
+      - .:/bookstore
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=bookstore.settings
+      - DB_NAME=bookstore_db
+      - DB_USER=postgres
+      - DB_PASSWORD=mypassword
+      - DB_HOST=db
+      - DB_PORT=5432
+
+volumes:
+  postgres_data:
