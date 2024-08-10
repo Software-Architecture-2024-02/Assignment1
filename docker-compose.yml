@@ -12,7 +12,7 @@ services:
 
   web:
     build: .
-    command: /bin/bash -c "python bookstore/manage.py migrate && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver"
+    command: /bin/bash -c "python bookstore/manage.py migrate && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/bookstore
     ports:
