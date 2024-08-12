@@ -17,7 +17,7 @@ The Book Review Web Application is designed to manage and display information re
 
 The application provides the following views and functionalities:
 
-- **CRUD Operations**: Full Create, Read, Update, and Delete operations for authors, books, reviews, sales, and any additional models or relationships.
+- **CRUD Operations**: Full Create, Read, Update, and Delete operations for authors, books, reviews, sales.
 - **Author Statistics Table**: A sortable and filterable table displaying authors, the number of books published, average review scores, and total sales.
 - **Top Rated Books Table**: A table showing the top 10 highest-rated books of all time, along with their most popular highest and lowest-rated reviews.
 - **Top Selling Books Table**: A table listing the top 50 best-selling books of all time, including total sales for each book, total sales for the author, and information on whether the book was among the top 5 best-selling books in the year of its publication.
