@@ -1,0 +1,6 @@
+services:
+  bookstore_redis:
+    image: redis:7.4.0
+  
+    depends_on:
+      - db

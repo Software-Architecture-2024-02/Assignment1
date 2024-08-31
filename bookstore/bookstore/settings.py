@@ -16,7 +16,15 @@ import os
 from dotenv import load_dotenv
 load_dotenv()  # Carga las variables del archivo .env
 
-
+#CACHES = {
+#    'default': {
+#        'BACKEND': 'django_redis.cache.RedisCache',
+#        'LOCATION': 'localhost:6379/1',  # Use the appropriate Redis server URL
+#        'OPTIONS': {
+#            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#        }
+#    }
+#}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -57,6 +57,9 @@ You must implement multiple docker compose files that account for
 the following deployments:
 - [x] Application + Database
 - [ ] Application + Database + Cache
+  - run: `docker compose -f compose.yaml -f compose-redis.yaml up`
+      
+      This makes run both of the compose files.
 - [ ] Application + Database + Search Engine
 - [ ] Application + Database + Reverse Proxy
 - [ ] Application + Database + Reverse Proxy + Cache + Search Engine
