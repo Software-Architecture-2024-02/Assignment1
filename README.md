@@ -55,8 +55,8 @@ For this assignment we will use:
 ### We have to set up the following:
 You must implement multiple docker compose files that account for
 the following deployments:
-- Application + Database
-- Application + Database + Cache
-- Application + Database + Search Engine
-- Application + Database + Reverse Proxy
-- Application + Database + Reverse Proxy + Cache + Search Engine
+- [x] Application + Database
+- [ ] Application + Database + Cache
+- [ ] Application + Database + Search Engine
+- [ ] Application + Database + Reverse Proxy
+- [ ] Application + Database + Reverse Proxy + Cache + Search Engine
