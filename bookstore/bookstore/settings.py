@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_opensearch_dsl',
     'library'
 ]
 
@@ -91,6 +92,31 @@ DATABASES = {
     }
 }
 
+#Opensearch
+OPENSEARCH_DSL = {
+    'default': {
+        'hosts': 'opensearch-node1:9200'
+    },
+    'secure': {
+        'hosts': [{ "scheme": "https", 
+                    "host": "opensearch-node1",
+                    "port": 9200}],
+                    
+        'http_auth': ("admin", "Str0ng!Passw0rd"),
+        'timeout': 120,
+    },
+}
+
+
+# OPENSEARCH_DSL = {
+#     'default': {
+#         'hosts': [
+#             os.environ.get('OPENSEARCH_HOST', 'opensearch-node1:9200'),
+#             os.environ.get('OPENSEARCH_HOST', 'opensearch-node2:9200'),
+#         ]
+#     },
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -132,3 +158,4 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
