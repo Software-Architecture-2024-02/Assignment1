@@ -173,3 +173,42 @@ p {
     margin: 1px auto;
     padding: 0 90px;
 }
+
+
+.author-container {
+    display: flex;
+    align-items: center; /* Vertically centers the image and text */
+    gap: 20px; /* Adds space between the image and text */
+}
+
+.author-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover; /* Ensures the image covers the circle */
+    border-radius: 50%; /* Makes the image circular */
+}
+
+.author-details {
+    max-width: 600px; /* Adjust as needed */
+}
+
+.book-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* Space between the image and text */
+}
+
+.book-image {
+    flex-shrink: 0; /* Prevents the image from shrinking */
+}
+
+.book-cover {
+    max-width: 200px; /* Adjust the maximum width of the book cover */
+    max-height: 300px; /* Adjust the maximum height of the book cover */
+    height: auto; /* Maintains aspect ratio */
+    display: block; /* Ensures the image is treated as a block element */
+}
+
+.book-info {
+    flex-grow: 1; /* Allows the text to take up remaining space */
+}

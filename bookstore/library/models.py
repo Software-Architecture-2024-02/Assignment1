@@ -3,6 +3,7 @@ from django.urls import reverse
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to='authors/', blank=True, null=True)
     date_of_birth = models.DateField()
     country_of_origin = models.CharField(max_length=100)
     short_description = models.TextField()
@@ -13,6 +14,7 @@ class Author(models.Model):
 
 class Book(models.Model):
     name = models.CharField(max_length=100)
+    cover = models.ImageField(upload_to='books/', blank=True, null=True)
     summary = models.TextField()
     date_of_publication = models.DateField()
     number_of_sales = models.IntegerField(default=0)
