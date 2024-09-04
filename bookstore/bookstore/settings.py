@@ -39,8 +39,11 @@ SECRET_KEY = 'django-insecure-f1xq#lnp3$c&+)i7q==@4^^kol3f&z1l01k88)eilw$2_gpk1n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+ALLOWED_HOSTS = ['app.localhost']
+
+USE_X_FORWARDED_HOST = True
 
 # Application definition
 
@@ -135,9 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS =(
-     os.path.join(BASE_DIR, 'static'),
-     )
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -146,3 +147,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ------ Options to check if a component is active or not -------
+
+# Check environment variable to decide whether to serve static files (HAProxy)
+
+SERVE_STATIC = os.getenv('SERVE_STATIC', 'True') == 'True' # True= Django, False = Reverse Proxy
+
+if SERVE_STATIC: 
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    STATIC_URL = 'http://app.localhost/static/'
+    MEDIA_URL = 'http://app.localhost/media/'

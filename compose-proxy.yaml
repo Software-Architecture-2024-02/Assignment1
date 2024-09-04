@@ -1,0 +1,44 @@
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: bookstore_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: /bin/bash -c "python bookstore/manage.py makemigrations && python bookstore/manage.py migrate && python bookstore/manage.py collectstatic && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/bookstore
+      - staticfiles:/app/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=bookstore.settings
+      - DB_NAME=bookstore_db
+      - DB_USER=postgres
+      - DB_PASSWORD=mypassword
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SERVE_STATIC=False
+  
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  staticfiles:
