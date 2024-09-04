@@ -11,7 +11,7 @@ services:
 
   web:
     build: .
-    command: /bin/bash -c "python bookstore/manage.py makemigrations && python bookstore/manage.py migrate && python bookstore/manage.py collectstatic && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver 0.0.0.0:8000"
+    command: /bin/bash -c "python bookstore/manage.py makemigrations && python bookstore/manage.py migrate  && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/bookstore
       - staticfiles:/app/staticfiles
