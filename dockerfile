@@ -5,7 +5,5 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 WORKDIR /bookstore
 
-COPY . /bookstore/
-
-COPY ./requirements.txt /bookstore/
+COPY . ./requirements.txt /bookstore/
 RUN pip install -r requirements.txt
