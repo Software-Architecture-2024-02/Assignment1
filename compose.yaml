@@ -26,6 +26,7 @@ services:
       - DB_PASSWORD=mypassword
       - DB_HOST=db
       - DB_PORT=5432
+      - SERVE_STATIC=False
 
 volumes:
   postgres_data:

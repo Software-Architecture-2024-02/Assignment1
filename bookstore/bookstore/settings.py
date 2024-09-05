@@ -41,7 +41,7 @@ DEBUG = True
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-ALLOWED_HOSTS = ['app.localhost']
+ALLOWED_HOSTS = ['*']
 
 USE_X_FORWARDED_HOST = True
 
@@ -161,5 +161,5 @@ if SERVE_STATIC:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 else:
-    STATIC_URL = 'http://app.localhost/static/'
-    MEDIA_URL = 'http://app.localhost/media/'
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
