@@ -14,17 +14,29 @@ from pathlib import Path
 
 import os
 from dotenv import load_dotenv
+import redis
+import logging
+
 load_dotenv()  # Carga las variables del archivo .env
 
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'django_redis.cache.RedisCache',
-#        'LOCATION': 'localhost:6379/1',  # Use the appropriate Redis server URL
-#        'OPTIONS': {
-#            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-#        }
-#    }
-#}
+logger = logging.getLogger(__name__)
+
+# Try connecting to Redis
+try:
+    r = redis.from_url('redis://bookstore_redis:6379')
+    # Ping Redis to check if it's available
+    r.ping()
+    logger.info("______Redis connection successful_________")
+    # If Redis is available, use Redis as the cache backend
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://bookstore_redis:6379",
+        }
+    }
+except redis.ConnectionError:
+    logger.warning("_______No Redis service detected, caching is disabled________")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,12 +69,17 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "django.middleware.cache.UpdateCacheMiddleware",
     'django.middleware.common.CommonMiddleware',
+    "django.middleware.cache.FetchFromCacheMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+#CACHE_MIDDLEWARE_ALIAS = 'bookstore_cached_page'
+#CACHE_MIDDLEWARE_SECONDS = 1200 # Set to cached the site for 20 minutes
 
 ROOT_URLCONF = 'bookstore.urls'
 
