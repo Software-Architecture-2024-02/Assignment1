@@ -17,6 +17,11 @@ from dotenv import load_dotenv
 load_dotenv()  # Carga las variables del archivo .env
 
 
+import warnings
+from urllib3.exceptions import InsecureRequestWarning
+
+warnings.simplefilter('ignore', InsecureRequestWarning)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -95,28 +100,12 @@ DATABASES = {
 #Opensearch
 OPENSEARCH_DSL = {
     'default': {
-        'hosts': 'opensearch-node1:9200'
-    },
-    'secure': {
-        'hosts': [{ "scheme": "https", 
-                    "host": "opensearch-node1",
-                    "port": 9200}],
-                    
-        'http_auth': ("admin", "Str0ng!Passw0rd"),
-        'timeout': 120,
-    },
+        'hosts': ['opensearch-node1:9200'],
+    }
 }
 
 
-# OPENSEARCH_DSL = {
-#     'default': {
-#         'hosts': [
-#             os.environ.get('OPENSEARCH_HOST', 'opensearch-node1:9200'),
-#             os.environ.get('OPENSEARCH_HOST', 'opensearch-node2:9200'),
-#         ]
-#     },
-# }
-
+SEARCH_ENGINE = 'opensearch' 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

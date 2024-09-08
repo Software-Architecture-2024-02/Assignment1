@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: mypassword
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+###
   opensearch-node1:
     image: opensearchproject/opensearch:latest
     container_name: opensearch-node1
@@ -43,11 +43,18 @@ services:
       - '5601'
     environment:
       OPENSEARCH_HOSTS: '["https://opensearch-node1:9200"]'
-
+####
 
   web:
     build: .
-    command: /bin/bash -c "python bookstore/manage.py migrate && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver 0.0.0.0:8000"
+    command: /bin/bash -c "
+      python bookstore/manage.py migrate && 
+      python bookstore/populate_db_fake.py && 
+
+      yes | python bookstore/manage.py opensearch index create &&
+      python bookstore/manage.py opensearch document index &&
+
+      python bookstore/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/bookstore
     ports:
