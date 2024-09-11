@@ -1,0 +1,81 @@
+#name : Bookstore
+
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: bookstore_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+###
+  opensearch-node1:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch-node1
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true  # along with the memlock settings below, disables swapping
+      - OPENSEARCH_JAVA_OPTS=-Xms128m -Xmx256m  # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=Str0ng!Passw0rd    # Sets the demo admin user password when using demo configuration, required for OpenSearch 2.12 and higher
+      - "DISABLE_INSTALL_DEMO_CONFIG=true"
+      - plugins.security.disabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536  # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data
+    ports:
+      - 9200:9200
+      - 9600:9600  # required for Performance Analyzer
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:9200/_cluster/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
+####
+
+  web:
+    build: .
+    command: /bin/bash -c "
+      python bookstore/manage.py migrate && 
+      python bookstore/populate_db_fake.py && 
+      python bookstore/manage.py opensearch index rebuild --force &&
+      python bookstore/populate_opensearch.py  &&
+      python bookstore/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/bookstore
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      opensearch-node1:
+        condition: service_healthy
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=bookstore.settings
+      - DB_NAME=bookstore_db
+      - DB_USER=postgres
+      - DB_PASSWORD=mypassword
+      - DB_HOST=db
+      - DB_PORT=5432
+
+volumes:
+  postgres_data:
+  opensearch-data1:

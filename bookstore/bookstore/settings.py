@@ -16,6 +16,8 @@ import os
 from dotenv import load_dotenv
 import redis
 import logging
+import requests
+
 
 load_dotenv()  # Carga las variables del archivo .env
 
@@ -37,6 +39,24 @@ try:
 except redis.ConnectionError:
     logger.warning("_______No Redis service detected, caching is disabled________")
 
+
+SEARCH_ENGINE = 'database'  # Default to using the database
+OPENSEARCH_DSL = {
+    'default': {
+        'hosts': ['http://opensearch-node1:9200'],
+    }
+}
+
+try:
+    response = requests.get(f"{OPENSEARCH_DSL['default']['hosts'][0]}/_cluster/health", timeout=5)
+    if response.status_code == 200:
+        logger.info("______OpenSearch connection successful_________")
+        SEARCH_ENGINE = 'opensearch'
+    else:
+        logger.warning("______OpenSearch service not responding, using database________")
+except (requests.ConnectionError, requests.Timeout):
+    logger.warning("______OpenSearch service not detected, using database________")
+    
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -63,6 +83,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_opensearch_dsl',
     'library'
 ]
 
@@ -101,6 +122,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bookstore.wsgi.application'
 
+# #Opensearch
+# OPENSEARCH_DSL = {
+#     'default': {
+#         'hosts': ['opensearch-node1:9200'],
+#     }
+# }
+
+
+# SEARCH_ENGINE = 'opensearch' 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
