@@ -1,7 +1,4 @@
 
-#name : Bookstore
-
-
 services:
   db:
     image: postgres:15
@@ -14,9 +11,13 @@ services:
 
   web:
     build: .
-    command: /bin/bash -c "python bookstore/manage.py makemigrations && python bookstore/manage.py migrate && python bookstore/populate_db_fake.py && python bookstore/manage.py runserver 0.0.0.0:8000"
+    command: /bin/bash -c "python bookstore/manage.py makemigrations && 
+                            python bookstore/manage.py migrate  && 
+                            python bookstore/populate_db_fake.py && 
+                            python bookstore/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/bookstore
+      - staticfiles:/app/staticfiles
     ports:
       - "8000:8000"
     depends_on:
@@ -30,6 +31,17 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - SERVE_STATIC=False
+  
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
+  staticfiles:

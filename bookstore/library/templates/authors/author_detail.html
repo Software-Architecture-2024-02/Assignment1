@@ -1,10 +1,20 @@
 {% extends "home.html" %}
+{% load static %}
 
 {% block content %}
   <h1>{{ object.name }}</h1>
-  <p>Date of Birth: {{ object.date_of_birth }}</p>
-  <p>Country of Origin: {{ object.country_of_origin }}</p>
-  <p>Description: {{ object.short_description }}</p>
-  <a href="{% url 'author-update' object.pk %}">Edit</a>
-  <a href="{% url 'author-delete' object.pk %}">Delete</a>
+  <div class="author-container">
+    {% if object.photo %}
+      <img src="{{ object.photo.url }}" alt="{{ object.name }}" class="author-photo">
+    {% else %}
+      <img src="{% static 'images/default_author.png' %}" alt="{{ object.name }}" class="author-photo">
+    {% endif %}
+    <div class="author-details">
+      <p>Date of Birth: {{ object.date_of_birth }}</p>
+      <p>Country of Origin: {{ object.country_of_origin }}</p>
+      <p>Description: {{ object.short_description }}</p>
+      <a href="{% url 'author-update' object.pk %}">Edit</a>
+      <a href="{% url 'author-delete' object.pk %}">Delete</a>
+    </div>
+  </div>
 {% endblock %}

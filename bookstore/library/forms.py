@@ -4,7 +4,7 @@ from .models import Author, Book, Review, Sale
 class AuthorForm(forms.ModelForm):
     class Meta:
         model = Author
-        fields = ['name', 'date_of_birth', 'country_of_origin', 'short_description']
+        fields = ['name', 'photo', 'date_of_birth', 'country_of_origin', 'short_description']
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
         }
@@ -15,7 +15,7 @@ class BookForm(forms.ModelForm):
         self.fields['author'].label_from_instance = lambda obj: obj.name
     class Meta:
         model = Book
-        fields = ['name', 'summary', 'date_of_publication', 'number_of_sales', 'author']
+        fields = ['name', 'cover', 'summary', 'date_of_publication', 'number_of_sales', 'author']
         widgets = {
             'date_of_publication': forms.DateInput(attrs={'type': 'date'}),
         }
