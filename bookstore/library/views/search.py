@@ -27,7 +27,6 @@ class SearchView(View):
                             'summary': book.summary,
                             'get_absolute_url': book.get_absolute_url()
                         })
-                    print("SEARCHED WITH OPENSEARCH")
                 except:
                     # Search in PostgreSQL
                     search_results = Book.objects.filter(summary__icontains=query)
