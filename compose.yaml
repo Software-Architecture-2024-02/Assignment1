@@ -1,4 +1,7 @@
 
+#name : Bookstore
+
+
 services:
   db:
     image: postgres:15
