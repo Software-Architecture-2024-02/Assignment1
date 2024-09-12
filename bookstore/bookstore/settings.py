@@ -14,17 +14,49 @@ from pathlib import Path
 
 import os
 from dotenv import load_dotenv
+import redis
+import logging
+import requests
+
+
 load_dotenv()  # Carga las variables del archivo .env
 
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'django_redis.cache.RedisCache',
-#        'LOCATION': 'localhost:6379/1',  # Use the appropriate Redis server URL
-#        'OPTIONS': {
-#            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-#        }
-#    }
-#}
+logger = logging.getLogger(__name__)
+
+# Try connecting to Redis
+try:
+    r = redis.from_url('redis://bookstore_redis:6379')
+    # Ping Redis to check if it's available
+    r.ping()
+    logger.info("______Redis connection successful_________")
+    # If Redis is available, use Redis as the cache backend
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://bookstore_redis:6379",
+        }
+    }
+except redis.ConnectionError:
+    logger.warning("_______No Redis service detected, caching is disabled________")
+
+
+SEARCH_ENGINE = 'database'  # Default to using the database
+OPENSEARCH_DSL = {
+    'default': {
+        'hosts': ['http://opensearch-node1:9200'],
+    }
+}
+
+try:
+    response = requests.get(f"{OPENSEARCH_DSL['default']['hosts'][0]}/_cluster/health", timeout=5)
+    if response.status_code == 200:
+        logger.info("______OpenSearch connection successful_________")
+        SEARCH_ENGINE = 'opensearch'
+    else:
+        logger.warning("______OpenSearch service not responding, using database________")
+except (requests.ConnectionError, requests.Timeout):
+    logger.warning("______OpenSearch service not detected, using database________")
+    
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +70,7 @@ SECRET_KEY = 'django-insecure-f1xq#lnp3$c&+)i7q==@4^^kol3f&z1l01k88)eilw$2_gpk1n
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -54,18 +87,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_opensearch_dsl',
     'library'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "django.middleware.cache.UpdateCacheMiddleware",
     'django.middleware.common.CommonMiddleware',
+    "django.middleware.cache.FetchFromCacheMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+#CACHE_MIDDLEWARE_ALIAS = 'bookstore_cached_page'
+#CACHE_MIDDLEWARE_SECONDS = 1200 # Set to cached the site for 20 minutes
 
 ROOT_URLCONF = 'bookstore.urls'
 
@@ -87,6 +126,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bookstore.wsgi.application'
 
+# #Opensearch
+# OPENSEARCH_DSL = {
+#     'default': {
+#         'hosts': ['opensearch-node1:9200'],
+#     }
+# }
+
+
+# SEARCH_ENGINE = 'opensearch' 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
